@@ -35,11 +35,9 @@ arrus.set_clog_level(arrus.logging.DEBUG)
 arrus.add_log_file("swe_test.log", arrus.logging.TRACE)
 
 
-def main():
-
+def acquire_swe():
     # Parameters
     id               = 0
-    
     push_hv          = 30
     push_freq        = 130.0/26*1e6
     push_length      = 100e-6
