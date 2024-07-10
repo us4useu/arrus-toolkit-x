@@ -31,11 +31,6 @@ us4r: {
     us4oem_channels_mask: [
         {},{}
     ]
-	
-    tx_rx_limits: {
-        pulse_length: {begin: 0, end: 810e-6} # [s]
-        voltage: {begin: 0, end: 91} # [V]
-    }	
 }
 
 
