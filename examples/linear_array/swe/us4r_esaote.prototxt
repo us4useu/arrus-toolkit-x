@@ -30,6 +30,7 @@ us4r: {
         lna_gain: 24
         pga_gain: 30
         lpf_cutoff: 15000000
+		active_termination: 200
     }
 
     channels_mask: {}
