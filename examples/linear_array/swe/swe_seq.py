@@ -77,7 +77,7 @@ def main():
     pwi_hv        = push_hv + 20         # PWI tracking pulse HV voltage [V]. Range: [push_hv+2; push_hv+20]    
     pwi_freq      = 130.0/20*1e6         # PWI tracking pulse center frequency [Hz]. Divisor of 130.0 must be even!
     pwi_txncycles = 2                    # PWI tracking pulse number of cycles 
-    pwi_pri       = 120e-6               # PWI tracking sequence pulse repetition interval [s]
+    pwi_pri       = 120e-6               # PWI tracking sequence pulse repetition interval [s]. Minimum is roundtrip time (defined by n_samples at 65 MHz sampling clock) +7us.
     pwi_angles    = [0.0]                # PWI tracking sequnce CPWC angles. List of angles in [degrees], for example: [0.0], or [-4.0, 0.0, 4.0]
     n_samples     = 5120                 # Number of samples to be collected in each RX operation of tracking sequence. Must be multiple of 64.
     imaging_pw_n_repeats = 80            # Number of frames to be captured in tracking sequence.
@@ -97,7 +97,7 @@ def main():
 
     hv_voltage_0 = pwi_hv
     hv_voltage_1 = push_hv
-    push_pri = push_length + 50e-6
+    push_pri = push_length + 50e-6  # 50us is the time between end of push pulse and strat of first tracking pulse. Can be reduced down to minimum 7us if required.
 
     medium = arrus.medium.Medium(name="cirs049a", speed_of_sound=sos)
     
@@ -105,8 +105,7 @@ def main():
     with arrus.Session(protofile, medium=medium) as sess:
         us4r = sess.get_device("/Us4R:0")
 
-        us4r.set_maximum_pulse_length(510e-6)
-        us4r.set_hv_voltage((hv_voltage_0, hv_voltage_0), (hv_voltage_1, hv_voltage_1))
+        us4r.set_hv_voltage((hv_voltage_1, hv_voltage_1), (hv_voltage_0, hv_voltage_0))
         
         n_elements = us4r.get_probe_model().n_elements
  
@@ -135,7 +134,7 @@ def main():
             TxRx(
                 Tx(
                     aperture=arrus.ops.us4r.Aperture(center=0), 
-                    excitation=Pulse(center_frequency=pwi_freq, n_periods=pwi_txncycles, inverse=False, amplitude_level=0),
+                    excitation=Pulse(center_frequency=pwi_freq, n_periods=pwi_txncycles, inverse=False, amplitude_level=2),
                     focus=np.Inf,  # [m]
                     angle=angle/180*np.pi,  # [rad]
                     speed_of_sound=medium.speed_of_sound
