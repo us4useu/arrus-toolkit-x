@@ -76,7 +76,7 @@ def main():
     push_focus       = 30e-3             # Push pulse focus depth [m]. Applies to all beams in a comb.
     push_center      = [31.5, 95.5, 159.5]  # Push pulse aperture lateral position [element indices] of individual beams in a comb.
     
-    pwi_hv        = push_hv + 20         # PWI tracking pulse HV voltage [V]. Range: [push_hv+2; push_hv+20]    
+    pwi_hv        = push_hv + 10         # PWI tracking pulse HV voltage [V]. Range: [push_hv+2; push_hv+20]    
     pwi_freq      = 130.0/20*1e6         # PWI tracking pulse center frequency [Hz]
     pwi_txncycles = 2                    # PWI tracking pulse number of cycles 
     pwi_pri       = 120e-6               # PWI tracking sequence pulse repetition interval [s]. Minimum is roundtrip time (defined by n_samples at 65 MHz sampling clock) +7us.
@@ -94,8 +94,8 @@ def main():
     if(pwi_hv<push_hv):
         pwi_hv = push_hv + 2
 
-    if(pwi_hv>(push_hv+20)):
-        pwi_hv = push_hv + 20    
+    if(pwi_hv>(push_hv+10)):
+        pwi_hv = push_hv + 10    
 
     hv_voltage_0 = pwi_hv
     hv_voltage_1 = push_hv

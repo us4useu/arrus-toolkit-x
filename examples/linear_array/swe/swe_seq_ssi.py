@@ -81,7 +81,7 @@ def main():
     push_center      = np.array([31.5, 95.5, 159.5])                          # Push pulse aperture center elements indices (for each lateral position of SSI beam) 
     
     # Tracking sequence parameters
-    pwi_hv        = push_hv + 20      # PWI tracking pulse HV voltage [V]. Range: [push_hv+2; push_hv+20]   
+    pwi_hv        = push_hv + 10      # PWI tracking pulse HV voltage [V]. Range: [push_hv+2; push_hv+20]   
     pwi_freq      = 130.0/20*1e6      # PWI tracking pulse center frequency [Hz]
     pwi_txncycles = 2                 # PWI tracking pulse number of cycles 
     pwi_pri       = 120e-6            # PWI tracking sequence pulse repetition interval [s]. Minimum is roundtrip time (defined by n_samples at 65 MHz sampling clock) +7us.
@@ -104,8 +104,8 @@ def main():
     if(pwi_hv<push_hv):
         pwi_hv = push_hv + 2
 
-    if(pwi_hv>(push_hv+20)):
-        pwi_hv = push_hv + 20        
+    if(pwi_hv>(push_hv+10)):
+        pwi_hv = push_hv + 10        
 
     hv_voltage_0 = pwi_hv
     hv_voltage_1 = push_hv
@@ -208,7 +208,7 @@ def main():
         buffer, metadata = sess.upload(scheme)
 
         # Configure the TGC profile
-        us4r.set_tgc(arrus.ops.tgc.LinearTgc(start=30, slope=800))   # 30 dB + 800 dB/m (30 dB + 8 dB/cm - distance assumes one side propagation - here TGC saturates at max 54 dB for echos from depth of 4cm)
+        us4r.set_tgc(arrus.ops.tgc.LinearTgc(start=30, slope=400))   # 30 dB + 800 dB/m (30 dB + 4 dB/cm - distance assumes one side propagation - here TGC saturates at max 54 dB for echos from depth of 4cm)
 
         # Run the TX/RX sequence and wait for data
         sess.run()
